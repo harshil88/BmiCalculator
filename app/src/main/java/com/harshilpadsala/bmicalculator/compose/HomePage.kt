@@ -20,9 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.harshilpadsala.bmicalculator.R
 
 enum class Gender {
-    None,
-    Male,
-    Female
+    None, Male, Female
 }
 
 @Composable
@@ -37,44 +35,34 @@ fun HomePage() {
 
 @Composable
 fun SelectGenderComponent(
-    modifier: Modifier,
-    onSelectGender: (Gender) -> Unit
+    modifier: Modifier, onSelectGender: (Gender) -> Unit
 ) {
     val selectedGender = remember { mutableStateOf(Gender.None) }
 
     Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        MaleGenderCard(
-            onClick = {
-                selectedGender.value = Gender.Male
-            },
-            modifier = Modifier.border(
-                2.dp,
-                if (selectedGender.value == Gender.Male) Color.Blue else Color.Red
-            )
-        )
-        FemaleGenderCard(
-            onClick = {
-                selectedGender.value = Gender.Female
+        MaleGenderCard(modifier = Modifier.border(
+            2.dp, if (selectedGender.value == Gender.Male) Color.Blue else Color.Red
+        )) {
+            selectedGender.value = Gender.Male
+            onSelectGender(selectedGender.value)
+        }
 
-            },
-            modifier = Modifier.border(
-                2.dp,
-                if (selectedGender.value == Gender.Female) Color.Blue else Color.Red
-            )
-        )
+        FemaleGenderCard(modifier = Modifier.border(
+            2.dp, if (selectedGender.value == Gender.Female) Color.Blue else Color.Red
+        )) {
+            selectedGender.value = Gender.Female
+            onSelectGender(selectedGender.value)
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MaleGenderCard(onClick: () -> Unit, modifier: Modifier) {
+fun MaleGenderCard(modifier: Modifier, onClick: () -> Unit) {
     Card(
-        onClick = onClick,
-        modifier = modifier
-
+        onClick = onClick, modifier = modifier
     ) {
         GenderCardContent(
             text = "Male",
@@ -86,10 +74,9 @@ fun MaleGenderCard(onClick: () -> Unit, modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FemaleGenderCard(onClick: () -> Unit, modifier: Modifier) {
+fun FemaleGenderCard(modifier: Modifier, onClick: () -> Unit) {
     Card(
-        onClick = onClick,
-        modifier = modifier
+        onClick = onClick, modifier = modifier
 
     ) {
         GenderCardContent(
