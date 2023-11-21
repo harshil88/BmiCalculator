@@ -1,63 +1,113 @@
 package com.harshilpadsala.bmicalculator.compose
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.harshilpadsala.bmicalculator.R
 
-enum class Gender{
+enum class Gender {
+    None,
     Male,
     Female
 }
 
 @Composable
-fun HomePage(){
+fun HomePage() {
     Column {
-        SelectGenderComponent()
+        SelectGenderComponent(modifier = Modifier) { gender ->
+            Log.i("Gender", "Selected Gender is $gender")
+        }
     }
 }
 
+
 @Composable
-fun SelectGenderComponent(){
-    Row {
-        GenderCard(
-            text = "Male",
-            imageRes = R.drawable.ic_male,
-            imageDes = "Male Gender Image",
-            onTap = {}
+fun SelectGenderComponent(
+    modifier: Modifier,
+    onSelectGender: (Gender) -> Unit
+) {
+    val selectedGender = remember { mutableStateOf(Gender.None) }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        MaleGenderCard(
+            onClick = {
+                selectedGender.value = Gender.Male
+            },
+            modifier = Modifier.border(
+                2.dp,
+                if (selectedGender.value == Gender.Male) Color.Blue else Color.Red
+            )
         )
-        GenderCard(
-            text = "Female",
-            imageRes = R.drawable.ic_female,
-            imageDes = "Female Gender Image",
-            onTap = {}
+        FemaleGenderCard(
+            onClick = {
+                selectedGender.value = Gender.Female
+
+            },
+            modifier = Modifier.border(
+                2.dp,
+                if (selectedGender.value == Gender.Female) Color.Blue else Color.Red
+            )
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GenderCard(text : String , imageRes : Int , imageDes : String, onTap :  () -> Unit){
+fun MaleGenderCard(onClick: () -> Unit, modifier: Modifier) {
     Card(
-        onClick = onTap
+        onClick = onClick,
+        modifier = modifier
+
     ) {
-        Image(
-            painter = painterResource(
-                id = imageRes,
-                ),
-            contentDescription = imageDes ,
-            )
-        Text(text = text)
+        GenderCardContent(
+            text = "Male",
+            imageRes = R.drawable.ic_male,
+            imageDes = "Male Gender Image",
+        )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GenderCardContent(){
+fun FemaleGenderCard(onClick: () -> Unit, modifier: Modifier) {
+    Card(
+        onClick = onClick,
+        modifier = modifier
 
+    ) {
+        GenderCardContent(
+            text = "Female",
+            imageRes = R.drawable.ic_female,
+            imageDes = "Female Gender Image",
+        )
+    }
+}
+
+
+@Composable
+fun GenderCardContent(text: String, imageRes: Int, imageDes: String) {
+    Image(
+        painter = painterResource(
+            id = imageRes,
+        ),
+        contentDescription = imageDes,
+    )
+    Text(text = text)
 }
