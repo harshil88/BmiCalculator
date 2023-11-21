@@ -1,16 +1,20 @@
 package com.harshilpadsala.bmicalculator.compose.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
 @Composable
-fun HeightSliderComponent(onValueChange : (Int) -> Unit) {
+fun HeightSliderComponent(
+    initialValue : Int,
+    onValueChange : (Int) -> Unit) {
 
-    val heightValue = remember { mutableStateOf(120) }
+    val heightValue = remember { mutableIntStateOf(initialValue) }
 
     Column {
         Text(text = "Height")
@@ -22,5 +26,8 @@ fun HeightSliderComponent(onValueChange : (Int) -> Unit) {
             heightValue.value = value.toInt()
             onValueChange(heightValue.value)
         })
+        ElevatedButton(onClick = { /*TODO*/ }) {
+            Text(text = "Calculate BMI")
+        }
     }
 }
